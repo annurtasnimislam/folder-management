@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrapper input {
+  width: 70%;
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
+  padding: 10px;
+  outline: none;
+}
+
+.wrapper button {
+  border: 0;
+  background-color: transparent;
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.wrapper p {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+}

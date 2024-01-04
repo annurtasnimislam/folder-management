@@ -1,13 +1,34 @@
+.flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.flex > p {
+  cursor: pointer;
+  font-weight: 500;
+  text-align: end;
+}
+.flex > p:hover {
+  font-weight: 700;
+  color: brown;
+}
 .wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin: 20px 0;
+  margin: 0 0 20px;
 }
 
 .wrapper > img {
   height: 3em;
   width: 3em;
+}
+
+.optionBox > p {
+  cursor: pointer;
+}
+.optionBox > p:hover {
+  text-decoration: underline;
 }

@@ -1,0 +1,6 @@
+.path {
+  cursor: pointer;
+}
+.path:hover {
+  text-decoration: underline;
+}

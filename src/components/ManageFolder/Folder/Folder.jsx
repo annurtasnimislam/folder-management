@@ -1,11 +1,14 @@
 import classes from "./Folder.module.css";
 import icon from "../../../assets/folder.png";
 
-export default function Folder({ folder, onFolderClick }) {
+export default function Folder({ folder, onFolderClick, deleteClick }) {
   return (
-    <div className={classes.wrapper} onClick={() => onFolderClick(folder)}>
-      <img src={icon} alt="folder" />
-      {folder.name}
+    <div className={classes.flex}>
+      <p onClick={() => deleteClick(folder)}>X</p>
+      <div className={classes.wrapper} onClick={() => onFolderClick(folder)}>
+        <img src={icon} alt="folder" />
+        {folder.name}
+      </div>
     </div>
   );
 }

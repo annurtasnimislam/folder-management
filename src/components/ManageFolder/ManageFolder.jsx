@@ -3,38 +3,124 @@ import FolderList from "./FolderList/FolderList";
 import classes from "./ManageFolder.module.css";
 import { Header, SearchBar } from "../Resource";
 import redo from "../../assets/redo.png";
+import Path from "./Path/Path";
 
 export default function ManageFolder() {
   const [folders, setFolders] = useState([]);
+  const [showFolder, setShowFolder] = useState([]);
+  const [active, setActive] = useState({});
 
   const [create, setCreate] = useState("");
 
-  const [name, setName] = useState("");
+  const [path, setPath] = useState([]);
+
+  const generateShortId = () => {
+    const randomShortNumber = Math.floor(Math.random() * 10000);
+    return String(randomShortNumber).padStart(4, "0");
+  };
+
+  const findFolder = (array, object) => {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === object.id) {
+        return array[i].subfolders;
+      } else {
+        const result = findFolder(array[i].subfolders, object);
+        if (result) {
+          return result;
+        }
+      }
+    }
+  };
+
+  const deleteFolder = (array, object) => {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === object.id) {
+        array.splice(i, 1);
+        return array;
+      } else {
+        const result = deleteFolder(array[i].subfolders, object);
+        if (result) {
+          return array;
+        }
+      }
+    }
+  };
+
+  const folderReplace = (array, object) => {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === object.id) {
+        array[i] = object;
+        return array;
+      } else {
+        const result = folderReplace(array[i].subfolders, object);
+        if (result) {
+          array[i].subfolders = result;
+          return array;
+        }
+      }
+    }
+  };
+
+  const handlePathClick = (folder) => {
+    setShowFolder(findFolder(folders, folder));
+    setActive(folder);
+    if (path.length > 0) {
+      for (let i = 0; i < path.length; i++) {
+        if (path[i].id === folder.id) {
+          const slicedPath = path.slice(0, i + 1);
+          setPath(slicedPath);
+        }
+      }
+    }
+  };
 
   const handleFolderClick = (folder) => {
-    setName(name + "/" + folder.name);
-    setFolders([]);
+    setShowFolder(findFolder(folders, folder));
+    setPath([...path, folder]);
+    setActive(folder);
   };
 
   const handleCreateFolder = () => {
-    if (create !== "") {
+    if (create !== "" && Object.keys(active).length > 0) {
       const newFolder = {
-        id: folders.length + 1,
+        id: generateShortId(),
         name: create,
         subfolders: [],
       };
-      setFolders([...folders, newFolder]);
       setCreate("");
+      let tempObj = { ...active };
+      tempObj.subfolders.push(newFolder);
+      let tempArray = folderReplace(folders, tempObj);
+      setFolders(tempArray);
+      setShowFolder(findFolder(tempArray, tempObj));
+    } else if (create !== "") {
+      const newFolder = {
+        id: generateShortId(),
+        name: create,
+        subfolders: [],
+      };
+      setCreate("");
+      setFolders([...folders, newFolder]);
+      setShowFolder([...showFolder, newFolder]);
     }
   };
+
+  const handleDelete = (folder) => {
+    let del = deleteFolder(showFolder, folder);
+    setShowFolder(del);
+  };
+
+  console.log("showFolder", showFolder);
 
   return (
     <div className={classes.container}>
       <Header />
-      {name && (
-        <div className={classes.path}>
+      {path.length > 0 && (
+        <div className={classes.pathHolder}>
           <img src={redo} alt="redo" />
-          <p>Path {name}</p>
+          {path.map((p) => (
+            <Path key={p.id} p={p} onClick={handlePathClick} />
+          ))}
         </div>
       )}
       <SearchBar
@@ -42,7 +128,11 @@ export default function ManageFolder() {
         onChange={(e) => setCreate(e.target.value)}
         onClick={handleCreateFolder}
       />
-      <FolderList folders={folders} onFolderClick={handleFolderClick} />
+      <FolderList
+        showFolder={showFolder}
+        onFolderClick={handleFolderClick}
+        deleteClick={handleDelete}
+      />
     </div>
   );
 }

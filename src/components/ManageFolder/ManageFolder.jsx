@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FolderList from "./FolderList/FolderList";
 import classes from "./ManageFolder.module.css";
 import { Header, SearchBar } from "../Resource";
@@ -11,8 +11,9 @@ export default function ManageFolder() {
   const [active, setActive] = useState({});
 
   const [create, setCreate] = useState("");
+  const [path, setPath] = useState([{ id: "0000", name: "root" }]);
 
-  const [path, setPath] = useState([]);
+  const [status, setStatus] = useState(false);
 
   const generateShortId = () => {
     const randomShortNumber = Math.floor(Math.random() * 10000);
@@ -62,15 +63,17 @@ export default function ManageFolder() {
   };
 
   const handlePathClick = (folder) => {
-    setShowFolder(findFolder(folders, folder));
-    setActive(folder);
-    if (path.length > 0) {
-      for (let i = 0; i < path.length; i++) {
-        if (path[i].id === folder.id) {
-          const slicedPath = path.slice(0, i + 1);
-          setPath(slicedPath);
-        }
+    for (let i = 0; i < path.length; i++) {
+      if (path[i].id === folder.id) {
+        const slicedPath = path.slice(0, i + 1);
+        setPath(slicedPath);
       }
+    }
+    if (folder.id === "0000" && folder.name === "root") {
+      setShowFolder(folders);
+    } else {
+      setShowFolder(findFolder(folders, folder));
+      setActive(folder);
     }
   };
 
@@ -105,12 +108,23 @@ export default function ManageFolder() {
     }
   };
 
+  useEffect(() => {
+    setStatus((prev) => !prev);
+  }, [showFolder, folders]);
+
   const handleDelete = (folder) => {
-    let del = deleteFolder(showFolder, folder);
+    let del = [];
+    let full = [];
+    del = deleteFolder(showFolder, folder);
     setShowFolder(del);
+    full = deleteFolder(folders, folder);
+    console.log("full", full);
+    setFolders(full);
+    setStatus((prev) => !prev);
   };
 
   console.log("showFolder", showFolder);
+  console.log("folders", folders);
 
   return (
     <div className={classes.container}>

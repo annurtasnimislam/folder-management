@@ -113,12 +113,14 @@ export default function ManageFolder() {
   // }, [showFolder, folders]);
 
   const handleDelete = (folder) => {
-    let del = [];
-    let full = [];
-    del = deleteFolder(showFolder, folder);
+    // let del = [];
+    // let full = [];
+    let del = deleteFolder(showFolder, folder);
+    console.log("delType", typeof del);
     setShowFolder(del);
-    full = deleteFolder(folders, folder);
-    setFolders(full);
+    // let full = deleteFolder(folders, folder);
+    // console.log("fullType", typeof full);
+    // setFolders(full);
     setStatus((prev) => !prev);
   };
 

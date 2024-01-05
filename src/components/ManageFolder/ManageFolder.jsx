@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FolderList from "./FolderList/FolderList";
 import classes from "./ManageFolder.module.css";
 import { Header, SearchBar } from "../Resource";
@@ -36,11 +36,28 @@ export default function ManageFolder() {
   const deleteFolder = (array, object) => {
     for (let i = 0; i < array.length; i++) {
       if (array[i].id === object.id) {
+        let parent = array[i].parentId;
         array.splice(i, 1);
+        resetOnDelete(folders, parent, array);
+        // return finalArray;
+      } else {
+        deleteFolder(array[i].subfolders, object);
+        // if (result) {
+        //   return array;
+        // }
+      }
+    }
+  };
+
+  const resetOnDelete = (array, parentId, subArray) => {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === parentId) {
+        array[i].subfolders = subArray;
         return array;
       } else {
-        const result = deleteFolder(array[i].subfolders, object);
+        const result = folderReplace(array[i].subfolders, parentId, subArray);
         if (result) {
+          array[i].subfolders = result;
           return array;
         }
       }
@@ -87,6 +104,7 @@ export default function ManageFolder() {
     if (create !== "" && Object.keys(active).length > 0) {
       const newFolder = {
         id: generateShortId(),
+        parentId: active.id,
         name: create,
         subfolders: [],
       };
@@ -99,6 +117,7 @@ export default function ManageFolder() {
     } else if (create !== "") {
       const newFolder = {
         id: generateShortId(),
+        parentId: "0000",
         name: create,
         subfolders: [],
       };
@@ -108,24 +127,10 @@ export default function ManageFolder() {
     }
   };
 
-  // useEffect(() => {
-  //   setStatus((prev) => !prev);
-  // }, [showFolder, folders]);
-
   const handleDelete = (folder) => {
-    // let del = [];
-    // let full = [];
-    let del = deleteFolder(showFolder, folder);
-    console.log("delType", typeof del);
-    setShowFolder(del);
-    // let full = deleteFolder(folders, folder);
-    // console.log("fullType", typeof full);
-    // setFolders(full);
+    deleteFolder(folders, folder);
     setStatus((prev) => !prev);
   };
-
-  // console.log("showFolder", showFolder);
-  // console.log("folders", folders);
 
   return (
     <div className={classes.container}>

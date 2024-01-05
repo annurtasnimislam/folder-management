@@ -108,9 +108,9 @@ export default function ManageFolder() {
     }
   };
 
-  useEffect(() => {
-    setStatus((prev) => !prev);
-  }, [showFolder, folders]);
+  // useEffect(() => {
+  //   setStatus((prev) => !prev);
+  // }, [showFolder, folders]);
 
   const handleDelete = (folder) => {
     let del = [];
@@ -118,13 +118,12 @@ export default function ManageFolder() {
     del = deleteFolder(showFolder, folder);
     setShowFolder(del);
     full = deleteFolder(folders, folder);
-    console.log("full", full);
     setFolders(full);
     setStatus((prev) => !prev);
   };
 
-  console.log("showFolder", showFolder);
-  console.log("folders", folders);
+  // console.log("showFolder", showFolder);
+  // console.log("folders", folders);
 
   return (
     <div className={classes.container}>

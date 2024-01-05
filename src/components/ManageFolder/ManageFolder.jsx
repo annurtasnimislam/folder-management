@@ -39,12 +39,8 @@ export default function ManageFolder() {
         let parent = array[i].parentId;
         array.splice(i, 1);
         resetOnDelete(folders, parent, array);
-        // return finalArray;
       } else {
         deleteFolder(array[i].subfolders, object);
-        // if (result) {
-        //   return array;
-        // }
       }
     }
   };
@@ -129,8 +125,18 @@ export default function ManageFolder() {
 
   const handleDelete = (folder) => {
     deleteFolder(folders, folder);
+    let tempArray = [...showFolder];
+    for (let i = 0; i < tempArray.length; i++) {
+      if (tempArray[i].id === folder.id) {
+        tempArray.splice(i, 1);
+        setShowFolder(tempArray);
+      }
+    }
     setStatus((prev) => !prev);
   };
+
+  console.log("folders", folders);
+  console.log("showFolder", showFolder);
 
   return (
     <div className={classes.container}>

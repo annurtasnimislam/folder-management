@@ -6,12 +6,17 @@ import redo from "../../assets/redo.png";
 import Path from "./Path/Path";
 
 export default function ManageFolder() {
-  const [folders, setFolders] = useState([]);
-  const [showFolder, setShowFolder] = useState([]);
-  const [active, setActive] = useState({});
+  let root = {
+    id: "0000",
+    name: "root",
+    subfolders: [],
+  };
+  const [folders, setFolders] = useState([root]);
+  const [active, setActive] = useState(root);
 
+  let showArray = [];
   const [create, setCreate] = useState("");
-  const [path, setPath] = useState([{ id: "0000", name: "root" }]);
+  const [path, setPath] = useState([root]);
 
   const [status, setStatus] = useState(false);
 
@@ -33,33 +38,6 @@ export default function ManageFolder() {
     }
   };
 
-  const deleteFolder = (array, object) => {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].id === object.id) {
-        let parent = array[i].parentId;
-        array.splice(i, 1);
-        resetOnDelete(folders, parent, array);
-      } else {
-        deleteFolder(array[i].subfolders, object);
-      }
-    }
-  };
-
-  const resetOnDelete = (array, parentId, subArray) => {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].id === parentId) {
-        array[i].subfolders = subArray;
-        return array;
-      } else {
-        const result = folderReplace(array[i].subfolders, parentId, subArray);
-        if (result) {
-          array[i].subfolders = result;
-          return array;
-        }
-      }
-    }
-  };
-
   const folderReplace = (array, object) => {
     for (let i = 0; i < array.length; i++) {
       if (array[i].id === object.id) {
@@ -75,29 +53,38 @@ export default function ManageFolder() {
     }
   };
 
+  const deleteFolder = (array, object) => {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === object.id) {
+        array.splice(i, 1);
+      } else {
+        deleteFolder(array[i].subfolders, object);
+      }
+    }
+  };
+
+  const handleDelete = (folder) => {
+    deleteFolder(folders, folder);
+    setStatus((prev) => !prev);
+  };
+
   const handlePathClick = (folder) => {
+    setActive(folder);
     for (let i = 0; i < path.length; i++) {
       if (path[i].id === folder.id) {
         const slicedPath = path.slice(0, i + 1);
         setPath(slicedPath);
       }
     }
-    if (folder.id === "0000" && folder.name === "root") {
-      setShowFolder(folders);
-    } else {
-      setShowFolder(findFolder(folders, folder));
-      setActive(folder);
-    }
   };
 
   const handleFolderClick = (folder) => {
-    setShowFolder(findFolder(folders, folder));
     setPath([...path, folder]);
     setActive(folder);
   };
 
   const handleCreateFolder = () => {
-    if (create !== "" && Object.keys(active).length > 0) {
+    if (create !== "") {
       const newFolder = {
         id: generateShortId(),
         parentId: active.id,
@@ -107,36 +94,11 @@ export default function ManageFolder() {
       setCreate("");
       let tempObj = { ...active };
       tempObj.subfolders.push(newFolder);
-      let tempArray = folderReplace(folders, tempObj);
-      setFolders(tempArray);
-      setShowFolder(findFolder(tempArray, tempObj));
-    } else if (create !== "") {
-      const newFolder = {
-        id: generateShortId(),
-        parentId: "0000",
-        name: create,
-        subfolders: [],
-      };
-      setCreate("");
-      setFolders([...folders, newFolder]);
-      setShowFolder([...showFolder, newFolder]);
+      setFolders(folderReplace(folders, tempObj));
     }
   };
 
-  const handleDelete = (folder) => {
-    deleteFolder(folders, folder);
-    let tempArray = [...showFolder];
-    for (let i = 0; i < tempArray.length; i++) {
-      if (tempArray[i].id === folder.id) {
-        tempArray.splice(i, 1);
-        setShowFolder(tempArray);
-      }
-    }
-    setStatus((prev) => !prev);
-  };
-
-  console.log("folders", folders);
-  console.log("showFolder", showFolder);
+  showArray = findFolder(folders, active);
 
   return (
     <div className={classes.container}>
@@ -151,11 +113,11 @@ export default function ManageFolder() {
       )}
       <SearchBar
         value={create}
-        onChange={(e) => setCreate(e.target.value)}
+        onChange={(e) => setCreate(e.target.value.trim())}
         onClick={handleCreateFolder}
       />
       <FolderList
-        showFolder={showFolder}
+        showArray={showArray}
         onFolderClick={handleFolderClick}
         deleteClick={handleDelete}
       />

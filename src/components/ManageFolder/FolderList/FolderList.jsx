@@ -2,23 +2,25 @@ import Folder from "../Folder/Folder";
 import classes from "./FolderList.module.css";
 
 export default function FolderList({ showArray, onFolderClick, deleteClick }) {
-  let order = true;
+  let order = "des";
 
   return (
     <div className={classes.list}>
       {showArray
         .sort((a, b) =>
-          order
+          order === "asc"
             ? a.name > b.name
               ? 1
               : b.name > a.name
               ? -1
               : 0
-            : a.name < b.name
-            ? 1
-            : b.name < a.name
-            ? -1
-            : 0
+            : order === "des"
+            ? a.name < b.name
+              ? 1
+              : b.name < a.name
+              ? -1
+              : 0
+            : ""
         )
         .map((folder, i) => (
           <Folder

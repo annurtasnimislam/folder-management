@@ -16,7 +16,6 @@ export default function ManageFolder() {
   const [folders, setFolders] = useState([root]);
   const [active, setActive] = useState(root);
 
-  let showArray = [];
   const [create, setCreate] = useState("");
   const [path, setPath] = useState([root]);
   const [status, setStatus] = useState(false);
@@ -70,17 +69,11 @@ export default function ManageFolder() {
   useEffect(() => {
     let tempObj = { ...colorObj };
     tempObj.color = colorNew;
-    console.log("tempObj", tempObj);
-    // let all = [];
     setFolders(folderReplace(folders, tempObj));
-    // setFolders(all);
     setPinku((prev) => !prev);
   }, [colorObj, colorNew]);
 
-  showArray = findFolder(folders, active);
-
   console.log("folders", folders);
-  console.log("showArray", showArray);
 
   return (
     <div className={classes.container}>
@@ -99,7 +92,6 @@ export default function ManageFolder() {
         onClick={handleCreateFolder}
       />
       <FolderList
-        showArray={showArray}
         onFolderClick={handleFolderClick}
         deleteClick={handleDelete}
         folders={folders}
@@ -107,6 +99,7 @@ export default function ManageFolder() {
         colorNew={colorNew}
         setColorNew={setColorNew}
         setColorObj={setColorObj}
+        active={active}
       />
     </div>
   );

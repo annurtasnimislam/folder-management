@@ -2,9 +2,9 @@ import { useContext } from "react";
 import Folder from "../Folder/Folder";
 import classes from "./FolderList.module.css";
 import { Order } from "../../../contexts/contexts";
+import { findFolder } from "../../../utils/recursive";
 
 export default function FolderList({
-  showArray,
   onFolderClick,
   deleteClick,
   folders,
@@ -12,12 +12,13 @@ export default function FolderList({
   colorNew,
   setColorNew,
   setColorObj,
+  active,
 }) {
   const { stateOrder } = useContext(Order);
 
   return (
     <div className={classes.list}>
-      {showArray
+      {findFolder(folders, active)
         .sort((a, b) =>
           stateOrder.info === "asc"
             ? a.name > b.name
@@ -39,7 +40,6 @@ export default function FolderList({
             folder={folder}
             onFolderClick={onFolderClick}
             deleteClick={deleteClick}
-            showArray={showArray}
             folders={folders}
             setFolders={setFolders}
             colorNew={colorNew}

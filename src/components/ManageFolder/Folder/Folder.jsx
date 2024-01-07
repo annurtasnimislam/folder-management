@@ -5,7 +5,6 @@ export default function Folder({
   folder,
   onFolderClick,
   deleteClick,
-  showArray,
   folders,
   setFolders,
   colorNew,

@@ -1,7 +1,7 @@
 import classes from "./Folder.module.css";
-import icon from "../../../assets/folder.png";
 import { useState } from "react";
 import { folderReplace } from "../../../utils/recursive";
+import { FaFolderOpen } from "react-icons/fa6";
 
 export default function Folder({
   folder,
@@ -10,7 +10,7 @@ export default function Folder({
   folders,
   setFolders,
 }) {
-  const [colorNew, setColorNew] = useState("");
+  const [colorNew, setColorNew] = useState("gray");
 
   if (colorNew) {
     let tempObj = { ...folder };
@@ -26,7 +26,7 @@ export default function Folder({
       <p onClick={() => setColorNew("brown")}>brown</p>
       <p onClick={() => setColorNew("gray")}>gray</p>
       <div className={classes.wrapper} onClick={() => onFolderClick(folder)}>
-        <img src={icon} alt="folder" />
+        <FaFolderOpen style={{ color: `var(--${colorNew})` }} />
         {folder.name}
       </div>
     </div>

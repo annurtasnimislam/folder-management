@@ -9,6 +9,7 @@ export const findFolder = (array, object) => {
       }
     }
   }
+  return [];
 };
 
 export const folderReplace = (array, object) => {
@@ -24,6 +25,7 @@ export const folderReplace = (array, object) => {
       }
     }
   }
+  return [];
 };
 
 export const deleteFolder = (array, object) => {

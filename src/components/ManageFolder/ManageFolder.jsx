@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FolderList from "./FolderList/FolderList";
 import classes from "./ManageFolder.module.css";
 import { Header, SearchBar } from "../Resource";
@@ -10,7 +10,7 @@ export default function ManageFolder() {
   let root = {
     id: "0000",
     name: "root",
-    color: "",
+    color: "gray",
     subfolders: [],
   };
   const [folders, setFolders] = useState([root]);
@@ -20,6 +20,7 @@ export default function ManageFolder() {
   const [create, setCreate] = useState("");
   const [path, setPath] = useState([root]);
   const [status, setStatus] = useState(false);
+  const [pinku, setPinku] = useState(false);
 
   const generateShortId = () => {
     const randomShortNumber = Math.floor(Math.random() * 10000);
@@ -53,7 +54,7 @@ export default function ManageFolder() {
         id: generateShortId(),
         parentId: active.id,
         name: create,
-        color: "",
+        color: "gray",
         subfolders: [],
       };
       setCreate("");
@@ -63,7 +64,23 @@ export default function ManageFolder() {
     }
   };
 
+  const [colorNew, setColorNew] = useState("");
+  const [colorObj, setColorObj] = useState({});
+
+  useEffect(() => {
+    let tempObj = { ...colorObj };
+    tempObj.color = colorNew;
+    console.log("tempObj", tempObj);
+    // let all = [];
+    setFolders(folderReplace(folders, tempObj));
+    // setFolders(all);
+    setPinku((prev) => !prev);
+  }, [colorObj, colorNew]);
+
   showArray = findFolder(folders, active);
+
+  console.log("folders", folders);
+  console.log("showArray", showArray);
 
   return (
     <div className={classes.container}>
@@ -85,7 +102,11 @@ export default function ManageFolder() {
         showArray={showArray}
         onFolderClick={handleFolderClick}
         deleteClick={handleDelete}
+        folders={folders}
         setFolders={setFolders}
+        colorNew={colorNew}
+        setColorNew={setColorNew}
+        setColorObj={setColorObj}
       />
     </div>
   );

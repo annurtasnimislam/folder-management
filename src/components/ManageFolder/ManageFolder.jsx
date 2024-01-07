@@ -85,7 +85,6 @@ export default function ManageFolder() {
         showArray={showArray}
         onFolderClick={handleFolderClick}
         deleteClick={handleDelete}
-        folders={folders}
         setFolders={setFolders}
       />
     </div>

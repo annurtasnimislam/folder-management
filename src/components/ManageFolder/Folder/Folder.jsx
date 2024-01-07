@@ -1,5 +1,5 @@
 import classes from "./Folder.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { folderReplace } from "../../../utils/recursive";
 import { FaFolderOpen } from "react-icons/fa6";
 
@@ -7,16 +7,15 @@ export default function Folder({
   folder,
   onFolderClick,
   deleteClick,
-  folders,
   setFolders,
 }) {
   const [colorNew, setColorNew] = useState("gray");
 
-  if (colorNew) {
+  useEffect(() => {
     let tempObj = { ...folder };
     tempObj.color = colorNew;
-    setFolders(folderReplace(folders, tempObj));
-  }
+    setFolders((prevFolders) => folderReplace(prevFolders, tempObj));
+  }, [colorNew]);
 
   return (
     <div className={classes.flex}>

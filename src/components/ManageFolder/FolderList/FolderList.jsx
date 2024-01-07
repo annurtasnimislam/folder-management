@@ -5,7 +5,6 @@ export default function FolderList({
   showArray,
   onFolderClick,
   deleteClick,
-  folders,
   setFolders,
 }) {
   let order = "des";
@@ -34,7 +33,6 @@ export default function FolderList({
             folder={folder}
             onFolderClick={onFolderClick}
             deleteClick={deleteClick}
-            folders={folders}
             setFolders={setFolders}
           />
         ))}

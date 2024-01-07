@@ -4,11 +4,13 @@ import classes from "./ManageFolder.module.css";
 import { Header, SearchBar } from "../Resource";
 import redo from "../../assets/redo.png";
 import Path from "./Path/Path";
+import { findFolder, folderReplace, deleteFolder } from "../../utils/recursive";
 
 export default function ManageFolder() {
   let root = {
     id: "0000",
     name: "root",
+    color: "",
     subfolders: [],
   };
   const [folders, setFolders] = useState([root]);
@@ -17,7 +19,6 @@ export default function ManageFolder() {
   let showArray = [];
   const [create, setCreate] = useState("");
   const [path, setPath] = useState([root]);
-
   const [status, setStatus] = useState(false);
 
   const generateShortId = () => {
@@ -25,47 +26,10 @@ export default function ManageFolder() {
     return String(randomShortNumber).padStart(4, "0");
   };
 
-  const findFolder = (array, object) => {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].id === object.id) {
-        return array[i].subfolders;
-      } else {
-        const result = findFolder(array[i].subfolders, object);
-        if (result) {
-          return result;
-        }
-      }
-    }
-  };
-
-  const folderReplace = (array, object) => {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].id === object.id) {
-        array[i] = object;
-        return array;
-      } else {
-        const result = folderReplace(array[i].subfolders, object);
-        if (result) {
-          array[i].subfolders = result;
-          return array;
-        }
-      }
-    }
-  };
-
-  const deleteFolder = (array, object) => {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].id === object.id) {
-        array.splice(i, 1);
-      } else {
-        deleteFolder(array[i].subfolders, object);
-      }
-    }
-  };
-
   const handleDelete = (folder) => {
     deleteFolder(folders, folder);
     setStatus((prev) => !prev);
+    console.log(folders);
   };
 
   const handlePathClick = (folder) => {
@@ -89,6 +53,7 @@ export default function ManageFolder() {
         id: generateShortId(),
         parentId: active.id,
         name: create,
+        color: "",
         subfolders: [],
       };
       setCreate("");
@@ -120,6 +85,8 @@ export default function ManageFolder() {
         showArray={showArray}
         onFolderClick={handleFolderClick}
         deleteClick={handleDelete}
+        folders={folders}
+        setFolders={setFolders}
       />
     </div>
   );

@@ -1,7 +1,13 @@
 import Folder from "../Folder/Folder";
 import classes from "./FolderList.module.css";
 
-export default function FolderList({ showArray, onFolderClick, deleteClick }) {
+export default function FolderList({
+  showArray,
+  onFolderClick,
+  deleteClick,
+  folders,
+  setFolders,
+}) {
   let order = "des";
 
   return (
@@ -28,6 +34,8 @@ export default function FolderList({ showArray, onFolderClick, deleteClick }) {
             folder={folder}
             onFolderClick={onFolderClick}
             deleteClick={deleteClick}
+            folders={folders}
+            setFolders={setFolders}
           />
         ))}
     </div>

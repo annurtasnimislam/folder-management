@@ -4,49 +4,30 @@ import classes from "./ManageFolder.module.css";
 import { Header, SearchBar } from "../Resource";
 import redo from "../../assets/redo.png";
 import Path from "./Path/Path";
-import { findFolder, folderReplace, deleteFolder } from "../../utils/recursive";
+import {
+  generateShortId,
+  findFolder,
+  folderReplace,
+  deleteFolder,
+} from "../../utils/recursive";
 
 export default function ManageFolder() {
   let root = {
-    id: "0000",
+    id: "00000",
     name: "root",
     color: "gray",
     subfolders: [],
   };
+  let showArray = [];
+
   const [folders, setFolders] = useState([root]);
   const [active, setActive] = useState(root);
-
-  let showArray = [];
   const [create, setCreate] = useState("");
   const [path, setPath] = useState([root]);
   const [status, setStatus] = useState(false);
   const [state, setState] = useState(false);
 
-  const generateShortId = () => {
-    const randomShortNumber = Math.floor(Math.random() * 10000);
-    return String(randomShortNumber).padStart(4, "0");
-  };
-
-  const handleDelete = (folder) => {
-    deleteFolder(folders, folder);
-    setStatus((prev) => !prev);
-    console.log(folders);
-  };
-
-  const handlePathClick = (folder) => {
-    setActive(folder);
-    for (let i = 0; i < path.length; i++) {
-      if (path[i].id === folder.id) {
-        const slicedPath = path.slice(0, i + 1);
-        setPath(slicedPath);
-      }
-    }
-  };
-
-  const handleFolderClick = (folder) => {
-    setPath([...path, folder]);
-    setActive(folder);
-  };
+  // ******Functions******
 
   const handleCreateFolder = () => {
     if (create !== "") {
@@ -64,6 +45,26 @@ export default function ManageFolder() {
     }
   };
 
+  const handleFolderClick = (folder) => {
+    setPath([...path, folder]);
+    setActive(folder);
+  };
+
+  const handlePathClick = (folder) => {
+    setActive(folder);
+    for (let i = 0; i < path.length; i++) {
+      if (path[i].id === folder.id) {
+        const slicedPath = path.slice(0, i + 1);
+        setPath(slicedPath);
+      }
+    }
+  };
+
+  const handleDelete = (folder) => {
+    deleteFolder(folders, folder);
+    setStatus((prev) => !prev);
+  };
+
   const handleColor = (folder, color) => {
     let tempObj = {};
     tempObj = { ...folder };
@@ -73,6 +74,8 @@ export default function ManageFolder() {
     setFolders(all);
     setState((prev) => !prev);
   };
+
+  // ******Functions******
 
   showArray = findFolder(folders, active);
 
@@ -96,7 +99,6 @@ export default function ManageFolder() {
         showArray={showArray}
         onFolderClick={handleFolderClick}
         deleteClick={handleDelete}
-        setFolders={setFolders}
         onColorClick={handleColor}
       />
     </div>

@@ -7,7 +7,6 @@ export default function FolderList({
   showArray,
   onFolderClick,
   deleteClick,
-  setFolders,
   onColorClick,
 }) {
   const { stateOrder } = useContext(Order);
@@ -35,7 +34,6 @@ export default function FolderList({
             folder={folder}
             onFolderClick={onFolderClick}
             deleteClick={deleteClick}
-            setFolders={setFolders}
             onColorClick={onColorClick}
           />
         ))}

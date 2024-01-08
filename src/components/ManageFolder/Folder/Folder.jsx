@@ -1,13 +1,10 @@
 import classes from "./Folder.module.css";
-import { useEffect, useState } from "react";
-import { folderReplace } from "../../../utils/recursive";
 import { FaFolderOpen } from "react-icons/fa6";
 
 export default function Folder({
   folder,
   onFolderClick,
   deleteClick,
-  setFolders,
   onColorClick,
 }) {
   return (

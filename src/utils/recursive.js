@@ -1,3 +1,8 @@
+export const generateShortId = () => {
+  const randomShortNumber = Math.floor(Math.random() * 10000);
+  return String(randomShortNumber).padStart(4, "0");
+};
+
 export const findFolder = (array, object) => {
   for (let i = 0; i < array.length; i++) {
     if (array[i].id === object.id) {

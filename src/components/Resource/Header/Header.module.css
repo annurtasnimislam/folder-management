@@ -1,5 +1,13 @@
 .wrapper {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5em;
+  align-items: center;
+}
+
+.wrapper > div:first-child {
+  display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 1.5em;

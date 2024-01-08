@@ -1,5 +1,7 @@
 import Folder from "../Folder/Folder";
 import classes from "./FolderList.module.css";
+import { useContext } from "react";
+import { Order } from "../../../contexts/contexts";
 
 export default function FolderList({
   showArray,
@@ -7,19 +9,18 @@ export default function FolderList({
   deleteClick,
   setFolders,
 }) {
-  let order = "des";
-
+  const { stateOrder } = useContext(Order);
   return (
     <div className={classes.list}>
       {showArray
         .sort((a, b) =>
-          order === "asc"
+          stateOrder.info === "asc"
             ? a.name > b.name
               ? 1
               : b.name > a.name
               ? -1
               : 0
-            : order === "des"
+            : stateOrder.info === "dsc"
             ? a.name < b.name
               ? 1
               : b.name < a.name

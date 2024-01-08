@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import FolderList from "./FolderList/FolderList";
 import classes from "./ManageFolder.module.css";
 import { Header, SearchBar } from "../Resource";
@@ -10,6 +10,7 @@ import {
   folderReplace,
   deleteFolder,
 } from "../../utils/recursive";
+import { Folder } from "../../contexts/contexts";
 
 export default function ManageFolder() {
   let root = {
@@ -27,6 +28,8 @@ export default function ManageFolder() {
   const [status, setStatus] = useState(false);
   const [state, setState] = useState(false);
 
+  const { stateFolder, dispatchFolder } = useContext(Folder);
+
   // ******Functions******
 
   const handleCreateFolder = () => {
@@ -42,6 +45,9 @@ export default function ManageFolder() {
       let tempObj = { ...active };
       tempObj.subfolders.push(newFolder);
       setFolders(folderReplace(folders, tempObj));
+      let all = [];
+      all = folderReplace(folders, tempObj);
+      dispatchFolder({ type: "set", payload: all });
     }
   };
 
@@ -62,6 +68,7 @@ export default function ManageFolder() {
 
   const handleDelete = (folder) => {
     deleteFolder(folders, folder);
+    dispatchFolder({ type: "set", payload: folders });
     setStatus((prev) => !prev);
   };
 
@@ -71,13 +78,14 @@ export default function ManageFolder() {
     tempObj.color = color;
     let all = [];
     all = folderReplace(folders, tempObj);
+    dispatchFolder({ type: "set", payload: all });
     setFolders(all);
     setState((prev) => !prev);
   };
 
   // ******Functions******
 
-  showArray = findFolder(folders, active);
+  showArray = findFolder(stateFolder, active);
 
   return (
     <div className={classes.container}>

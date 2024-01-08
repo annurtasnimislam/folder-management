@@ -12,31 +12,32 @@ export default function FolderList({
   const { stateOrder } = useContext(Order);
   return (
     <div className={classes.list}>
-      {showArray
-        .sort((a, b) =>
-          stateOrder.info === "asc"
-            ? a.name > b.name
-              ? 1
-              : b.name > a.name
-              ? -1
-              : 0
-            : stateOrder.info === "dsc"
-            ? a.name < b.name
-              ? 1
-              : b.name < a.name
-              ? -1
-              : 0
-            : ""
-        )
-        .map((folder, i) => (
-          <Folder
-            key={i}
-            folder={folder}
-            onFolderClick={onFolderClick}
-            deleteClick={deleteClick}
-            onColorClick={onColorClick}
-          />
-        ))}
+      {showArray &&
+        showArray
+          .sort((a, b) =>
+            stateOrder.info === "asc"
+              ? a.name > b.name
+                ? 1
+                : b.name > a.name
+                ? -1
+                : 0
+              : stateOrder.info === "dsc"
+              ? a.name < b.name
+                ? 1
+                : b.name < a.name
+                ? -1
+                : 0
+              : ""
+          )
+          .map((folder, i) => (
+            <Folder
+              key={i}
+              folder={folder}
+              onFolderClick={onFolderClick}
+              deleteClick={deleteClick}
+              onColorClick={onColorClick}
+            />
+          ))}
     </div>
   );
 }

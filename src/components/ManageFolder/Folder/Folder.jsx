@@ -8,24 +8,17 @@ export default function Folder({
   onFolderClick,
   deleteClick,
   setFolders,
+  onColorClick,
 }) {
-  const [colorNew, setColorNew] = useState("gray");
-
-  useEffect(() => {
-    let tempObj = { ...folder };
-    tempObj.color = colorNew;
-    setFolders((prevFolders) => folderReplace(prevFolders, tempObj));
-  }, [colorNew]);
-
   return (
     <div className={classes.flex}>
       <p onClick={() => deleteClick(folder)}>X</p>
-      <p onClick={() => setColorNew("blue")}>blue</p>
-      <p onClick={() => setColorNew("green")}>green</p>
-      <p onClick={() => setColorNew("brown")}>brown</p>
-      <p onClick={() => setColorNew("gray")}>gray</p>
+      <p onClick={() => onColorClick(folder, "blue")}>blue</p>
+      <p onClick={() => onColorClick(folder, "green")}>green</p>
+      <p onClick={() => onColorClick(folder, "brown")}>brown</p>
+      <p onClick={() => onColorClick(folder, "gray")}>gray</p>
       <div className={classes.wrapper} onClick={() => onFolderClick(folder)}>
-        <FaFolderOpen style={{ color: `var(--${colorNew})` }} />
+        <FaFolderOpen style={{ color: `var(--${folder.color})` }} />
         {folder.name}
       </div>
     </div>

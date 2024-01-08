@@ -8,6 +8,7 @@ export default function FolderList({
   onFolderClick,
   deleteClick,
   setFolders,
+  onColorClick,
 }) {
   const { stateOrder } = useContext(Order);
   return (
@@ -35,6 +36,7 @@ export default function FolderList({
             onFolderClick={onFolderClick}
             deleteClick={deleteClick}
             setFolders={setFolders}
+            onColorClick={onColorClick}
           />
         ))}
     </div>

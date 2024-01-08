@@ -10,7 +10,7 @@ export default function ManageFolder() {
   let root = {
     id: "0000",
     name: "root",
-    color: "",
+    color: "gray",
     subfolders: [],
   };
   const [folders, setFolders] = useState([root]);
@@ -20,6 +20,7 @@ export default function ManageFolder() {
   const [create, setCreate] = useState("");
   const [path, setPath] = useState([root]);
   const [status, setStatus] = useState(false);
+  const [state, setState] = useState(false);
 
   const generateShortId = () => {
     const randomShortNumber = Math.floor(Math.random() * 10000);
@@ -53,7 +54,7 @@ export default function ManageFolder() {
         id: generateShortId(),
         parentId: active.id,
         name: create,
-        color: "",
+        color: "gray",
         subfolders: [],
       };
       setCreate("");
@@ -61,6 +62,16 @@ export default function ManageFolder() {
       tempObj.subfolders.push(newFolder);
       setFolders(folderReplace(folders, tempObj));
     }
+  };
+
+  const handleColor = (folder, color) => {
+    let tempObj = {};
+    tempObj = { ...folder };
+    tempObj.color = color;
+    let all = [];
+    all = folderReplace(folders, tempObj);
+    setFolders(all);
+    setState((prev) => !prev);
   };
 
   showArray = findFolder(folders, active);
@@ -86,6 +97,7 @@ export default function ManageFolder() {
         onFolderClick={handleFolderClick}
         deleteClick={handleDelete}
         setFolders={setFolders}
+        onColorClick={handleColor}
       />
     </div>
   );

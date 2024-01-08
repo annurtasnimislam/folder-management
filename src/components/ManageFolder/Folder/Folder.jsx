@@ -1,3 +1,4 @@
+import { useState } from "react";
 import classes from "./Folder.module.css";
 import { FaFolderOpen } from "react-icons/fa6";
 
@@ -7,17 +8,52 @@ export default function Folder({
   deleteClick,
   onColorClick,
 }) {
+  const [option, setOption] = useState(false);
+
   return (
     <div className={classes.flex}>
-      <p onClick={() => deleteClick(folder)}>X</p>
-      <p onClick={() => onColorClick(folder, "blue")}>blue</p>
-      <p onClick={() => onColorClick(folder, "green")}>green</p>
-      <p onClick={() => onColorClick(folder, "brown")}>brown</p>
-      <p onClick={() => onColorClick(folder, "gray")}>gray</p>
-      <div className={classes.wrapper} onClick={() => onFolderClick(folder)}>
+      <div className={classes.wrapper} onClick={() => setOption(true)}>
         <FaFolderOpen style={{ color: `var(--${folder.color})` }} />
         {folder.name}
       </div>
+      {option && (
+        <div className={classes.options}>
+          <p onClick={() => onFolderClick(folder)}>Open Folder</p>
+          <p onClick={() => deleteClick(folder)}>X</p>
+          <p
+            onClick={() => {
+              onColorClick(folder, "blue");
+              setOption(false);
+            }}
+          >
+            blue
+          </p>
+          <p
+            onClick={() => {
+              onColorClick(folder, "green");
+              setOption(false);
+            }}
+          >
+            green
+          </p>
+          <p
+            onClick={() => {
+              onColorClick(folder, "brown");
+              setOption(false);
+            }}
+          >
+            brown
+          </p>
+          <p
+            onClick={() => {
+              onColorClick(folder, "gray");
+              setOption(false);
+            }}
+          >
+            gray
+          </p>
+        </div>
+      )}
     </div>
   );
 }

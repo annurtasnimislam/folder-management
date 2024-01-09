@@ -21,12 +21,9 @@ export default function ManageFolder() {
   };
   let showArray = [];
 
-  const [folders, setFolders] = useState([root]);
   const [active, setActive] = useState(root);
   const [create, setCreate] = useState("");
   const [path, setPath] = useState([root]);
-  const [status, setStatus] = useState(false);
-  const [state, setState] = useState(false);
 
   const { stateFolder, dispatchFolder } = useContext(Folder);
 
@@ -44,10 +41,9 @@ export default function ManageFolder() {
       setCreate("");
       let tempObj = { ...active };
       tempObj.subfolders.push(newFolder);
-      setFolders(folderReplace(folders, tempObj));
-      let all = [];
-      all = folderReplace(folders, tempObj);
-      dispatchFolder({ type: "set", payload: all });
+      let all = [...stateFolder];
+      let replacedArray = folderReplace(all, tempObj);
+      dispatchFolder({ type: "set", payload: replacedArray });
     }
   };
 
@@ -67,9 +63,9 @@ export default function ManageFolder() {
   };
 
   const handleDelete = (folder) => {
-    deleteFolder(folders, folder);
-    dispatchFolder({ type: "set", payload: folders });
-    setStatus((prev) => !prev);
+    let all = [...stateFolder];
+    deleteFolder(all, folder);
+    dispatchFolder({ type: "set", payload: all });
   };
 
   const handleColor = (folder, color) => {
@@ -77,10 +73,8 @@ export default function ManageFolder() {
     tempObj = { ...folder };
     tempObj.color = color;
     let all = [];
-    all = folderReplace(folders, tempObj);
+    all = folderReplace(stateFolder, tempObj);
     dispatchFolder({ type: "set", payload: all });
-    setFolders(all);
-    setState((prev) => !prev);
   };
 
   // ******Functions******

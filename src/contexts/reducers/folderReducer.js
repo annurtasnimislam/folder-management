@@ -1,6 +1,13 @@
 import { Storage, GetStorage, SetStorage } from "../store/store";
 
-export const folderState = Storage("folder", []);
+export const folderState = Storage("folder", [
+  {
+    id: "00000",
+    name: "root",
+    color: "gray",
+    subfolders: [],
+  },
+]);
 
 export const folderReducer = (state, action) => {
   switch (action.type) {

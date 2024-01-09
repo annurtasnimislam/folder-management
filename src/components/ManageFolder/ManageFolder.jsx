@@ -61,9 +61,15 @@ export default function ManageFolder() {
   };
 
   const handleDelete = (folder) => {
-    let all = [...stateFolder];
-    deleteFolder(all, folder);
-    dispatchFolder({ type: "set", payload: all });
+    const userConfirmed = window.confirm(
+      `Are you sure you want to delete the folder "${folder.name}"?`
+    );
+
+    if (userConfirmed) {
+      let all = [...stateFolder];
+      deleteFolder(all, folder);
+      dispatchFolder({ type: "set", payload: all });
+    }
   };
 
   const handleColor = (folder, color) => {

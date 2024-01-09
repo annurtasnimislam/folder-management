@@ -3,6 +3,19 @@ export const generateShortId = () => {
   return String(randomShortNumber).padStart(4, "0");
 };
 
+export const findObject = (array, object) => {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].id === object.id) {
+      return array[i];
+    } else {
+      const result = findObject(array[i].subfolders, object);
+      if (result) {
+        return result;
+      }
+    }
+  }
+};
+
 export const findFolder = (array, object) => {
   for (let i = 0; i < array.length; i++) {
     if (array[i].id === object.id) {

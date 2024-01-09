@@ -6,6 +6,7 @@ import redo from "../../assets/redo.png";
 import Path from "./Path/Path";
 import {
   generateShortId,
+  findObject,
   findFolder,
   folderReplace,
   deleteFolder,
@@ -39,7 +40,7 @@ export default function ManageFolder() {
         subfolders: [],
       };
       setCreate("");
-      let tempObj = { ...active };
+      let tempObj = findObject(stateFolder, active);
       tempObj.subfolders.push(newFolder);
       let all = [...stateFolder];
       let replacedArray = folderReplace(all, tempObj);

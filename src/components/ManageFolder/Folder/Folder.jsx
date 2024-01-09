@@ -52,6 +52,7 @@ export default function Folder({
           >
             gray
           </p>
+          <p onClick={() => setOption(false)}>close</p>
         </div>
       )}
     </div>

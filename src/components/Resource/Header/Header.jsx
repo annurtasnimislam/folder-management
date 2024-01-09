@@ -14,7 +14,7 @@ export default function Header() {
         </div>
         <p>Folder Manager</p>
       </div>
-      <div>
+      <div className={classes.buttonHolder}>
         <button onClick={() => dispatchOrder({ type: "set", payload: "asc" })}>
           ASC
         </button>

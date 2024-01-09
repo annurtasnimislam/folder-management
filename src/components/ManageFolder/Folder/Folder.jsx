@@ -18,8 +18,7 @@ export default function Folder({
       </div>
       {option && (
         <div className={classes.options}>
-          <p onClick={() => onFolderClick(folder)}>Open Folder</p>
-          <p onClick={() => deleteClick(folder)}>X</p>
+          <p onClick={() => onFolderClick(folder)}>Open</p>
           <p
             onClick={() => {
               onColorClick(folder, "blue");
@@ -52,6 +51,7 @@ export default function Folder({
           >
             gray
           </p>
+          <p onClick={() => deleteClick(folder)}>delete</p>
           <p onClick={() => setOption(false)}>close</p>
         </div>
       )}

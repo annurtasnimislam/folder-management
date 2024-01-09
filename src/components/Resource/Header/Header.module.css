@@ -32,3 +32,8 @@
   font-weight: 600;
   color: var(--dark);
 }
+
+.buttonHolder {
+  display: flex;
+  gap: 10px;
+}

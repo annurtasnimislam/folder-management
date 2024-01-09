@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  margin: 1.5em 0 0;
 }
 .flex > p {
   cursor: pointer;
@@ -25,10 +27,26 @@
   height: 3em;
   width: 3em;
 }
-
-.optionBox > p {
-  cursor: pointer;
+.options {
+  background-color: white;
+  border-radius: 4px;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  box-shadow: 1px 2px 2px var(--light-gray);
 }
-.optionBox > p:hover {
-  text-decoration: underline;
+
+.options > p {
+  width: 100%;
+  cursor: pointer;
+  border-bottom: 1px solid var(--light);
+  padding: 8px 16px;
+}
+.options > p:hover {
+  color: darkgreen;
+  font-weight: 600;
 }

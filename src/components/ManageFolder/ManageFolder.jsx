@@ -11,26 +11,21 @@ import {
   folderReplace,
   deleteFolder,
 } from "../../utils/recursive";
-import { Folder } from "../../contexts/contexts";
+import { Active, Crumb, Folder } from "../../contexts/contexts";
 
 export default function ManageFolder() {
-  let root = {
-    id: "00000",
-    name: "root",
-    color: "gray",
-    subfolders: [],
-  };
   let showArray = [];
 
-  const [active, setActive] = useState(root);
   const [create, setCreate] = useState("");
-  const [path, setPath] = useState([root]);
-
   const { stateFolder, dispatchFolder } = useContext(Folder);
+  const { stateCrumb, dispatchCrumb } = useContext(Crumb);
+  const { stateActive, dispatchActive } = useContext(Active);
 
   // ******Functions******
 
   const handleCreateFolder = () => {
+    let active = { ...stateActive };
+
     if (create !== "") {
       const newFolder = {
         id: generateShortId(),
@@ -49,16 +44,18 @@ export default function ManageFolder() {
   };
 
   const handleFolderClick = (folder) => {
-    setPath([...path, folder]);
-    setActive(folder);
+    let temp = [...stateCrumb, folder];
+    dispatchCrumb({ type: "set", payload: temp });
+    dispatchActive({ type: "set", payload: folder });
   };
 
   const handlePathClick = (folder) => {
-    setActive(folder);
+    dispatchActive({ type: "set", payload: folder });
+    let path = [...stateCrumb];
     for (let i = 0; i < path.length; i++) {
       if (path[i].id === folder.id) {
         const slicedPath = path.slice(0, i + 1);
-        setPath(slicedPath);
+        dispatchCrumb({ type: "set", payload: slicedPath });
       }
     }
   };
@@ -80,19 +77,17 @@ export default function ManageFolder() {
 
   // ******Functions******
 
-  showArray = findFolder(stateFolder, active);
+  showArray = findFolder(stateFolder, stateActive);
 
   return (
     <div className={classes.container}>
       <Header />
-      {path.length > 0 && (
-        <div className={classes.pathHolder}>
-          <img src={redo} alt="redo" />
-          {path.map((p) => (
-            <Path key={p.id} p={p} onClick={handlePathClick} />
-          ))}
-        </div>
-      )}
+      <div className={classes.pathHolder}>
+        <img src={redo} alt="redo" />
+        {stateCrumb.map((p) => (
+          <Path key={p.id} p={p} onClick={handlePathClick} />
+        ))}
+      </div>
       <SearchBar
         value={create}
         onChange={(e) => setCreate(e.target.value.trim())}
